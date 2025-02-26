@@ -19,8 +19,6 @@
 		}
 	}
 
-
-
 	let gameOptions = {
 		fps: 1000 / 30, // 24 frames por segundo
 		keys: {}
@@ -41,18 +39,19 @@
 
 	function controlInputs() {
 
-		if (gameOptions.keys['ArrowLeft'] && gameOptions.keys['ArrowUp']) {
-			Baloon.pos.x -= Baloon.speed;
-			Baloon.pos.y += Baloon.speed;
-		}
-		else if (gameOptions.keys['ArrowLeft']) {
-			Baloon.pos.x -= Baloon.speed;
-		} else if (gameOptions.keys['ArrowUp']) {
-			Baloon.pos.y -= Baloon.speed;
-		}
+		const { keys } = gameOptions;
+    const { pos, speed } = Baloon;
+
+    if (keys['ArrowLeft']) pos.x -= speed;
+    if (keys['ArrowRight']) pos.x += speed;
+    if (keys['ArrowUp']) pos.y -= speed;
+    if (keys['ArrowDown']) pos.y += speed;
+
+    if (keys['Space']) {
+        changeSpeed();
+    }
 
 	}
-
 
 	const keyDown = (event) => {
 		gameOptions.keys[event.code] = true;
@@ -70,7 +69,19 @@
 
 	function updatePanel() {
 		updateHUD("mvelocidade", Baloon.speed);
-		updateHUD("maltitude", Baloon.pos.y);
+		updateHUD("maltitude", calculateAltitude());
+	}
+
+	function changeSpeed(){
+		const { speed } = Baloon
+		if(speed < 3)
+			speed++;
+		else
+			speed = 1;
+	}
+
+	function calculateAltitude() {
+		return window.innerHeight - Baloon.pos.y;
 	}
 
 	function updateHUD(elementId, text) {
