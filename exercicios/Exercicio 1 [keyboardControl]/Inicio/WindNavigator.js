@@ -74,6 +74,7 @@
 			changeSpeed('increase');
 		}
 		if (keys['ShiftLeft']) {
+			keys['ShiftLeft'] = false;
 			changeSpeed('decrease');
 		}
 
