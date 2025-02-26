@@ -19,7 +19,7 @@
 		}
 	}
 
-	let gameOptions = {
+	const gameOptions = {
 		fps: 1000 / 30, // 24 frames por segundo
 		keys: {}
 	}
@@ -33,32 +33,53 @@
 		timeHandler = setInterval(gameCicle, gameOptions.fps)
 
 		// iniciar aqui
-		window.addEventListener('keydown', keyDown, false);
-		window.addEventListener('keyup', keyUp, false);
+		window.addEventListener('keydown', (e) => toogleKeyPressStatus(e, true), false);
+		window.addEventListener('keyup', (e) => toogleKeyPressStatus(e, false), false);
 	}
 
 	function controlInputs() {
 
 		const { keys } = gameOptions;
-    const { pos, speed } = Baloon;
+		const { pos, speed } = Baloon;
 
-    if (keys['ArrowLeft']) pos.x -= speed;
-    if (keys['ArrowRight']) pos.x += speed;
-    if (keys['ArrowUp']) pos.y -= speed;
-    if (keys['ArrowDown']) pos.y += speed;
+		if(keys['ArrowLeft'] && keys['ArrowRight']) {
+			pos.x -= speed;
+			pos.x += speed;
+		}else if (keys['ArrowUp'] && keys['ArrowDown']) {
+			pos.y -= speed;
+			pos.y += speed;
+		} else if(keys['ArrowRight'] && keys['ArrowUp']) {
+			pos.x += speed;
+			pos.y -= speed;
+		}
+		else if(keys['ArrowRight'] && keys['ArrowDown']) {
+			pos.x += speed;
+			pos.y += speed
+		}
+		else if(keys['ArrowLeft'] && keys['ArrowUp']) {
+			pos.x -= speed;
+			pos.y -= speed;
+		} else if(keys['ArrowLeft'] && keys['ArrowDown']) {
+			pos.x -= speed;
+			pos.y += speed;
+		}
+		else if (keys['ArrowLeft']) pos.x -= speed;
+		else if (keys['ArrowRight']) pos.x += speed;
+		else if (keys['ArrowUp']) pos.y -= speed;
+		else if (keys['ArrowDown']) pos.y += speed;
 
-    if (keys['Space']) {
-        changeSpeed();
-    }
+
+		if (keys['Space']) {
+			changeSpeed('increase');
+		}
+		if (keys['ShiftLeft']) {
+			changeSpeed('decrease');
+		}
 
 	}
 
-	const keyDown = (event) => {
-		gameOptions.keys[event.code] = true;
-	}
-
-	const keyUp = (event) => {
-		gameOptions.keys[event.code] = false;
+	function toogleKeyPressStatus(event, isKeyPress) {
+		gameOptions.keys[event.code] = isKeyPress;
 	}
 
 	function gameCicle() {
@@ -72,12 +93,28 @@
 		updateHUD("maltitude", calculateAltitude());
 	}
 
-	function changeSpeed(){
-		const { speed } = Baloon
-		if(speed < 3)
-			speed++;
-		else
-			speed = 1;
+	function changeSpeed(action) {
+		const speed = Baloon.speed;
+		switch (action) {
+			case 'increase':
+				Baloon.speed = speed + 1;
+				break;
+			case 'decrease':
+				Baloon.speed = speed - 1;
+				break;
+			default:
+				break;
+		}
+
+		checkSpeedLimit();
+	}
+
+	function checkSpeedLimit() {
+		if (Baloon.speed > 10) {
+			Baloon.speed = 10;
+		} else if (Baloon.speed < 1) {
+			Baloon.speed = 1;
+		}
 	}
 
 	function calculateAltitude() {
