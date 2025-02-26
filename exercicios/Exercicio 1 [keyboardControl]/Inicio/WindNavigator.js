@@ -40,7 +40,8 @@
 	function controlInputs() {
 
 		const { keys } = gameOptions;
-		const { pos, speed } = Baloon;
+		const { pos, speed  } = Baloon;
+		let { width } = Baloon;
 
 		if(keys['ArrowLeft'] && keys['ArrowRight']) {
 			pos.x -= speed;
@@ -76,6 +77,14 @@
 			changeSpeed('decrease');
 		}
 
+		if(keys['KeyQ']){
+			Baloon.width -= Baloon.width > 5 ? 0.5 : 0;
+		}
+
+		if(keys['KeyE']){
+			Baloon.width += Baloon.width < 200 ? 0.5 : 0;
+		}
+
 	}
 
 	function toogleKeyPressStatus(event, isKeyPress) {
@@ -89,8 +98,8 @@
 	}
 
 	function updatePanel() {
-		updateHUD("mvelocidade", Baloon.speed);
-		updateHUD("maltitude", calculateAltitude());
+		updateHUD("mvelocidade", `${Baloon.speed} km/h`);
+		updateHUD("maltitude", `${calculateAltitude()} m`);
 	}
 
 	function changeSpeed(action) {
