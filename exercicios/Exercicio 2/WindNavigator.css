@@ -66,6 +66,12 @@ img {
   border:none;
 }
 
+.ship2 {
+	position:absolute;
+  top:250px;
+  left:260px;
+  border:none;
+}
 
 .monitor{
 	width:4em;
@@ -81,15 +87,15 @@ img {
 }
 
 .ballom-animation {
-	animation: ballom-moviment 3s ease-in-out infinite;
+	animation: ballom-animation 2s alternate ease-in-out infinite;
 }
 
 @keyframes ballom-animation {
 	0%{
-
+		transform: rotate(-10deg);
 	}
 	100%{
-
+		transform: rotate(10deg);
 	}
 }
 
@@ -102,7 +108,7 @@ img {
 	}
 	100% {
 		opacity: 0;
-		transform: translateY(-100%);
+		top: -100%;
 		scale: 0;
 	}
 

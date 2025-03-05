@@ -1,10 +1,11 @@
 class Baloom {
-  constructor() {
-      this.pos = { x: 250, y: 150 };
+  constructor(element, options) {
+    const {x, y} = options;
+      this.pos = { x: x, y: y };
       this.largura = 142;
       this.altura = 179;
       this.velocidade = 3;
-      this.baloomElement = document.getElementById('ship');
+      this.baloomElement = element;
   }
 
   update() {
@@ -14,9 +15,13 @@ class Baloom {
       this.baloomElement.style.height = this.altura + "px";
   }
 
+  addBallomAnimation() {
+    this.baloomElement.classList.add("ballom-animation")
+  }
+
   addDisappearEventTrigger(){
     this.baloomElement.addEventListener("mousedown", () => {
-      this.baloomElement.style.animation = "disappear 3s forwards";
+      this.baloomElement.style.animation = "disappear 500ms ease-in forwards";
     }, false);
 
   }
@@ -24,8 +29,20 @@ class Baloom {
 
 class Game {
   constructor() {
-      this.baloom = new Baloom();
+      this.baloom = new Baloom(document.getElementById('ship'), {
+        x: 250,
+        y: 150
+      });
       this.baloom.addDisappearEventTrigger();
+      this.baloom.addBallomAnimation();
+
+      this.baloom2 = new Baloom(document.getElementById('ship2'), {
+        x: 550,
+        y: 250
+      });
+      this.baloom2.addDisappearEventTrigger();
+      this.baloom2.addBallomAnimation();
+
       this.fps = 1000 / 30;
       this.keys = {};
       this.timeHandler;
@@ -52,8 +69,11 @@ class Game {
   }
 
   cycle() {
-      this.controlInputs();
+      this.controlInputs(this.baloom);
+      this.controlInputs(this.baloom2);
+
       this.baloom.update();
+      this.baloom2.update();
       this.updatePanel();
   }
 
@@ -70,61 +90,61 @@ class Game {
       else if (keys['ArrowLeft']) this.direction = "O";
   }
 
-  controlInputs() {
+  controlInputs(element) {
       this.checkKeys();
 
       // stop moviment if the baloon is in the limit of the screen
-      if(this.reachedScreenLimit()) return;
+      if(this.reachedScreenLimit(element)) return;
       
       switch (this.direction) {
           case "N":
-              this.baloom.pos.y -= this.baloom.velocidade;
+              element.pos.y -= element.velocidade;
               break;
           case "S":
-              this.baloom.pos.y += this.baloom.velocidade;
+              element.pos.y += element.velocidade;
               break;
           case "E":
-              this.baloom.pos.x += this.baloom.velocidade;
+              element.pos.x += element.velocidade;
               break;
           case "O":
-              this.baloom.pos.x -= this.baloom.velocidade;
+              element.pos.x -= element.velocidade;
               break;
           case "NE":
-              this.baloom.pos.y -= this.baloom.velocidade;
-              this.baloom.pos.x += this.baloom.velocidade;
+              element.pos.y -= element.velocidade;
+              element.pos.x += element.velocidade;
               break;
           case "NO":
-              this.baloom.pos.y -= this.baloom.velocidade;
-              this.baloom.pos.x -= this.baloom.velocidade;
+              element.pos.y -= element.velocidade;
+              element.pos.x -= element.velocidade;
               break;
           case "SE":
-              this.baloom.pos.y += this.baloom.velocidade;
-              this.baloom.pos.x += this.baloom.velocidade;
+              element.pos.y += element.velocidade;
+              element.pos.x += element.velocidade;
               break;
           case "SO":
-              this.baloom.pos.y += this.baloom.velocidade;
-              this.baloom.pos.x -= this.baloom.velocidade;
+              element.pos.y += element.velocidade;
+              element.pos.x -= element.velocidade;
               break;
       }
   }
 
-  reachedScreenLimit() {
+  reachedScreenLimit(element) {
     // para o movimento se o balão atingir o limite da tela
-    if (this.baloom.pos.x <= 0 && this.direction === "O") {
+    if (element.pos.x <= 0 && this.direction === "O") {
       this.direction = "E";
         return true;
     };
 
-    if (this.baloom.pos.x >= this.screen.limitWidth - this.baloom.largura && this.direction === "E") {
+    if (element.pos.x >= this.screen.limitWidth - element.largura && this.direction === "E") {
       this.direction = "O";
         return true;
     };
 
-    if (this.baloom.pos.y <= 0 && this.direction === "N"){
+    if (element.pos.y <= 0 && this.direction === "N"){
       this.direction = "S";
       return true
     };
-    if (this.baloom.pos.y >= this.screen.limitHeight - this.baloom.altura && this.direction === "S") {
+    if (element.pos.y >= this.screen.limitHeight - element.altura && this.direction === "S") {
       this.direction = "N";
       return true
     };
@@ -133,8 +153,8 @@ class Game {
   }
 
   updatePanel() {
-    document.getElementById("maltitude").innerHTML = Math.floor(screen.height - oBalao.pos.y - oBalao.altura ) + " m";
-    document.getElementById("mvelocidade").innerHTML = oBalao.velocidade + " km/h";
+    document.getElementById("maltitude").innerHTML = Math.floor(screen.height - this.baloom.pos.y - this.baloom.altura ) + " m";
+    document.getElementById("mvelocidade").innerHTML = this.baloom.velocidade + " km/h";
   }
 
 }
