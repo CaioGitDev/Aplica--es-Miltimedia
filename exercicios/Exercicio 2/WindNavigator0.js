@@ -4,20 +4,28 @@ class Baloom {
       this.largura = 142;
       this.altura = 179;
       this.velocidade = 3;
+      this.baloomElement = document.getElementById('ship');
   }
 
   update() {
-      let baloon = document.getElementById('ship');
-      baloon.style.left = this.pos.x + "px";
-      baloon.style.top = this.pos.y + "px";
-      baloon.style.width = this.largura + "px";
-      baloon.style.height = this.altura + "px";
+      this.baloomElement.style.left = this.pos.x + "px";
+      this.baloomElement.style.top = this.pos.y + "px";
+      this.baloomElement.style.width = this.largura + "px";
+      this.baloomElement.style.height = this.altura + "px";
+  }
+
+  addDisappearEventTrigger(){
+    this.baloomElement.addEventListener("mousedown", () => {
+      this.baloomElement.style.animation = "disappear 3s forwards";
+    }, false);
+
   }
 }
 
 class Game {
   constructor() {
       this.baloom = new Baloom();
+      this.baloom.addDisappearEventTrigger();
       this.fps = 1000 / 30;
       this.keys = {};
       this.timeHandler;
@@ -121,29 +129,13 @@ class Game {
       return true
     };
 
-    // if (this.baloom.pos.x <= 0 && this.baloom.pos.y <= 0 && this.direction === "NO") {
-    //   this.direction = "SE";
-    //   return true
-    // };
-
-    // if (this.baloom.pos.x >= this.screen.limitWidth - this.baloom.largura && this.baloom.pos.y <= 0 && this.direction === "NE") {
-    //   this.direction = "SO";
-    //   return true
-    // }
-
-    // if (this.baloom.pos.x <= 0 && this.baloom.pos.y >= this.screen.limitHeight - this.baloom.altura && this.direction === "SO") {
-    //   this.direction = "NE";
-    //   return true
-    // }
-
-    // if (this.baloom.pos.x >= this.screen.limitWidth - this.baloom.largura && this.baloom.pos.y >= this.screen.limitHeight - this.baloom.altura && this.direction === "SE") {
-    //   this.direction = "NO";
-    //   return true
-    // }
-
     return false;
   }
-  updatePanel() {}
+
+  updatePanel() {
+    document.getElementById("maltitude").innerHTML = Math.floor(screen.height - oBalao.pos.y - oBalao.altura ) + " m";
+    document.getElementById("mvelocidade").innerHTML = oBalao.velocidade + " km/h";
+  }
 
 }
 
@@ -151,109 +143,3 @@ class Game {
 let game = new Game();
 game.start();
 
-
-// // Definição dos estados de movimento vertical (zoom)
-// const ZOOM_IN = 1;
-// const ZOOM_OUT = 2;
-// const ZOOM_NONE = 0;
-
-
-// // Inicialização da direção e do estado de zoom
-// let direcao = 0;
-// let zoom = ZOOM_NONE;
-
-
-// //definir objeto para guardar teclas pressionadas
-//   let teclas = {}; 
-  
-  
-// //definir constantes do temporizador (frames)
-//   var fps = 1000 / 30; // Taxa de atualização do jogo
-//   var timeHandler;
- 
-// //chamar a funcao para o arranque do jogo
-//   window.addEventListener("load", inicio_jogo, false);
-
-// //definir a função do ciclo do jogo
-// function CicloDeJogo(e) {
-//     controloInput(); // Move o balão conforme a direção
-//     oBalao.update();
-//     atualizarPainel(); // Atualiza o painel de informações
-//   }
-
-// //definir a função do arranque do jogo
-// function inicio_jogo(e) {
-//     timeHandler = setInterval(CicloDeJogo, fps); // Inicia o loop do jogo
-//     window.addEventListener("keydown", teclaPressionada, false);
-//     window.addEventListener("keyup", teclaLibertada, false);
-//   }
-
-// //definir o que acontece quando uma tecla é pressionada
-// function teclaPressionada(e) {
-//     teclas[e.code] = true;
-// }
-
-// //definir o que acontece quando uma tecla é largada
-// function teclaLibertada(e) {
-//     teclas[e.code] = false;
-// }
-
-// // definir a Função para verificar as teclas pressionadas e ajustar a direção
-// function verTeclas() {
-//     if (teclas["ArrowUp"]) {
-//       direcao = 1;
-//     } else if (teclas["ArrowDown"]) {
-//       direcao = 2;
-//     } else if (teclas["ArrowLeft"]) {
-//       direcao = 3;
-//     } else if (teclas["ArrowRight"]) {
-//       direcao = 4;
-//     } else {
-//       direcao = 0;
-//     }
-
-//   }
-
-//  // Função para mover o balão conforme a direção definida e ajustar o tamanho do balão conforme a altura simulada
-//  function controloInput() {
-    
-//     verTeclas();
-//     switch (direcao) {
-//       case 1:
-//         oBalao.pos.y -= oBalao.velocidade;
-//         break;
-//       case 2:
-//         oBalao.pos.y += oBalao.velocidade;
-//         break;
-//       case 3:
-//         oBalao.pos.x -= oBalao.velocidade;
-//         break;
-//       case 4:
-//         oBalao.pos.x += oBalao.velocidade;
-//         break;
-//     }
-    
-//   }
-   
-
-//  //definir a funcao para atualizar o painel de informações da altitude e altura 
-//  function atualizarPainel() {
-//     document.getElementById("maltitude").innerHTML = Math.floor(screen.height - oBalao.pos.y - oBalao.altura ) + " m";
-//     document.getElementById("mvelocidade").innerHTML = oBalao.velocidade + " km/h";
-//   }
-
-
-
-
-
-  
-  
-
-
-  // Dimensões iniciais do balão
-
-
-
- 
-  
-  

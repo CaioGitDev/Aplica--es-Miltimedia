@@ -80,30 +80,5 @@ img {
 	height:10px;
 }
 
-.ballom-animation {
-	animation: ballom-moviment 3s ease-in-out infinite;
-}
+/* definir as animacoes */
 
-@keyframes ballom-animation {
-	0%{
-
-	}
-	100%{
-
-	}
-}
-
-@keyframes disappear {
-/* move to top and disappear */
-
-	0% {
-		opacity: 1;
-		transform: translateY(0);
-	}
-	100% {
-		opacity: 0;
-		transform: translateY(-100%);
-		scale: 0;
-	}
-
-}
