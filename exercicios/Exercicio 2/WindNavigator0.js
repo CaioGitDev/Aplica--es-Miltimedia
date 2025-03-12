@@ -29,14 +29,17 @@ class Baloom {
 
 class Game {
   constructor() {
-      this.baloom = new Baloom(document.getElementById('ship'), {
+
+      const assets = this.loadAssets();
+
+      this.baloom = new Baloom(assets["0"], {
         x: 250,
         y: 150
       });
       this.baloom.addDisappearEventTrigger();
       this.baloom.addBallomAnimation();
 
-      this.baloom2 = new Baloom(document.getElementById('ship2'), {
+      this.baloom2 = new Baloom(assets["1"], {
         x: 550,
         y: 250
       });
@@ -51,6 +54,33 @@ class Game {
         limitWidth: window.innerWidth,
         limitHeight: window.innerHeight
       }
+  }
+
+  loadAssets() {
+    const files = [
+      {
+        "name": "ship",
+        "src": "assets/ship.png"
+      },
+      {
+        "name": "tRex",
+        "src": "assets/tRex.png"
+      }
+    ]
+
+    let assets = [];
+
+    files.forEach(file => {
+      let img = new Image();
+      img.src = file.src;
+      img.id = `id-${file.name}`;
+      assets.push(img);
+
+      document.getElementById('world').prepend(img);
+    });
+    
+
+    return assets;
   }
 
   start() {
